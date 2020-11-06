@@ -16,6 +16,7 @@ export default class FlatListSlider extends Component {
 
   static defaultProps = {
     data: [],
+    initialScrollIndex: 0,
     imageKey: 'image',
     local: false,
     width: Math.round(Dimensions.get('window').width),
@@ -39,7 +40,7 @@ export default class FlatListSlider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      index: 0,
+      index: this.props.initialScrollIndex,
       data: this.props.data,
     };
     if (Platform.OS === 'android') {
@@ -48,12 +49,19 @@ export default class FlatListSlider extends Component {
   }
 
   componentDidMount() {
+    if( this.props.onRef){
+      this.props.onRef(this)
+    }
     if (this.props.autoscroll) {
       this.startAutoPlay();
     }
   }
 
   componentWillUnmount() {
+    if( this.props.onRef){
+      this.props.onRef(undefined)
+    }
+   
     if (this.props.autoscroll) {
       this.stopAutoPlay();
     }
@@ -68,13 +76,16 @@ export default class FlatListSlider extends Component {
       <View>
         <FlatList
           ref={this.slider}
+          windowSize={3}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          removeClippedSubviews={true}
           horizontal
           pagingEnabled={true}
           snapToInterval={totalItemWidth}
           decelerationRate="fast"
           bounces={false}
           contentContainerStyle={this.props.contentContainerStyle}
-          data={this.state.data}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) =>
             React.cloneElement(this.props.component, {
@@ -99,10 +110,7 @@ export default class FlatListSlider extends Component {
             offset: totalItemWidth * index,
             index,
           })}
-          windowSize={1}
-          initialNumToRender={1}
-          maxToRenderPerBatch={1}
-          removeClippedSubviews={true}
+          data={this.state.data}
         />
         {this.props.indicator && (
           <Indicator
@@ -135,7 +143,7 @@ export default class FlatListSlider extends Component {
           data: [...this.state.data, ...this.props.data],
         });
       } else {
-        this.setState({index: currentIndex});
+        this.setState({index: currentIndex%this.props.data.length});
       }
 
       if (this.props.currentIndexCallback) {
@@ -148,20 +156,35 @@ export default class FlatListSlider extends Component {
     viewAreaCoveragePercentThreshold: 50,
   };
 
-  changeSliderListIndex = () => {
+   incrementSliderListIndex = () => {
+     let newIndex = this.state.index + 1;
     if (this.props.animation) {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeIn);
     }
-    this.setState({index: this.state.index + 1});
+    this.setState({index: newIndex});
     this.slider.current.scrollToIndex({
-      index: this.state.index,
+      index: newIndex%this.props.data.length,
       animated: true,
     });
   };
 
+  decrementSliderListIndex = () => {
+    if( this.state.index>0){
+      let newIndex = this.state.index - 1;
+      if (this.props.animation) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeIn);
+      }
+      this.setState({index: newIndex});
+      this.slider.current.scrollToIndex({
+        index: newIndex%this.props.data.length,
+        animated: true,
+      });
+    }
+  };
+
   startAutoPlay = () => {
     this.sliderTimer = setInterval(
-      this.changeSliderListIndex,
+      this.incrementSliderListIndex,
       this.props.timer,
     );
   };

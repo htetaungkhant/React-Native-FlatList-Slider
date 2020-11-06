@@ -1,2 +1,4 @@
 import FlatListSlider from './src/FlatListSlider';
-export { FlatListSlider };
+import Indicator from './src/Indicator';
+
+export { FlatListSlider, Indicator };
