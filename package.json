@@ -1,6 +1,6 @@
 {
   "name": "flatlist-slider",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "React Native FlatList Slider Component",
   "main": "index.js",
   "scripts": {
