@@ -1,0 +1,27 @@
+{
+  "name": "react-native-flatlist-slider",
+  "version": "1.0.0",
+  "description": "React Native FlatList Slider Component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/htetaungkhant/React-Native-FlatList-Slider.git"
+  },
+  "keywords": [
+    "slider",
+    "imageslider",
+    "carousel",
+    "flatlist",
+    "react-native",
+    "react-component"
+  ],
+  "author": "Htet Aung KHant",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/htetaungkhant/React-Native-FlatList-Slider/issues"
+  },
+  "homepage": "https://github.com/htetaungkhant/React-Native-FlatList-Slider#readme"
+}
