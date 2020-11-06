@@ -1,6 +1,6 @@
 {
-  "name": "react-native-image-slider",
-  "version": "1.0.0",
+  "name": "htetaungkhant-image-slider",
+  "version": "1.0.1",
   "description": "React Native FlatList Slider Component",
   "main": "index.js",
   "scripts": {
